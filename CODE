@@ -1,0 +1,18 @@
+from flask import Flask, request, jsonify
+
+app = Flask(_name_)
+AUTH_TOKEN = "securetoken123"  # basic hardcoded token
+
+@app.route('/public-data')
+def public_data():
+    return jsonify({"user": "guest", "data": "This is public info"})
+
+@app.route('/secure-data')
+def secure_data():
+    token = request.headers.get('Authorization')
+    if token != AUTH_TOKEN:
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify({"user": "admin", "data": "This is secure info"})
+
+if _name_ == '_main_':
+    app.run(debug=True)
